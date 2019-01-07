@@ -4,10 +4,16 @@
 
 error_msg() {
   echo -e "\e[31mERROR\e[0m: $1"
+  for line in "${@:2}"; do
+    echo "...    $line"
+  done
 }
 
 info_msg() {
   echo -e "\e[36mINFO\e[0m: $1"
+  for line in "${@:2}"; do
+    echo "...   $line"
+  done
 }
 
 add_key() {
@@ -18,7 +24,7 @@ add_key() {
 
 # Validate script is being run as root.
 if [[ $EUID -ne 0 ]]; then
-  error_msg "this script must be run as root"
+  error_msg "this script must be run as root" "exiting script"
   exit 1
 fi
 
@@ -29,7 +35,7 @@ if [[ "$ver" != "18.10" && \
       "$ver" != "18.04" && \
       "$ver" != "16.04" ]]
 then
-  error_msg "unsupported version: '$ver'"
+  error_msg "unsupported version: '$ver'" "exiting script"
   exit 1
 fi
 
